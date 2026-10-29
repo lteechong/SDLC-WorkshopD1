@@ -1,0 +1,12 @@
+{
+  "name": "snip-cli",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Zero-dependency command-line client for the Snip backend",
+  "bin": {
+    "snip": "./cli.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
