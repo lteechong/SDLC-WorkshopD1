@@ -1,0 +1,92 @@
+<div class="app-shell">
+  <header class="topbar">
+    <a class="wordmark" href="/" aria-label="Snip home">snip<span>.</span></a>
+    <span class="topbar-note">LINK WORKSPACE</span>
+  </header>
+
+  <main class="workspace">
+    <section class="composer" aria-labelledby="page-title">
+      <p class="eyebrow">A SMALLER WAY TO SHARE</p>
+      <h1 id="page-title">Make room for <em>the good stuff.</em></h1>
+
+      <form class="url-form" (ngSubmit)="createLink()" novalidate>
+        <label for="destination">Destination URL</label>
+        <div class="input-row">
+          <input
+            id="destination"
+            name="destination"
+            type="text"
+            inputmode="url"
+            autocomplete="url"
+            placeholder="https://example.com/your-long-link"
+            [value]="urlInput()"
+            (input)="onUrlInput($event)"
+            [disabled]="isSubmitting()"
+            required
+          >
+          <button type="submit" [disabled]="isSubmitting() || !urlInput().trim()">
+            {{ isSubmitting() ? 'Creating...' : 'Shorten link' }}
+            <span aria-hidden="true">&rarr;</span>
+          </button>
+        </div>
+      </form>
+
+      @if (errorMessage(); as message) {
+        <p class="notice notice-error" role="alert">{{ message }}</p>
+      }
+
+      @if (createdLink(); as link) {
+        <p class="notice notice-success" role="status">
+          <span>Ready to share</span>
+          <a [href]="link.shortUrl" target="_blank" rel="noopener noreferrer">{{ link.shortUrl }}</a>
+        </p>
+      }
+    </section>
+
+    <section class="links-section" aria-labelledby="links-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">YOUR COLLECTION</p>
+          <h2 id="links-title">Recent links</h2>
+        </div>
+        <span class="link-count">{{ links().length }} total</span>
+      </div>
+
+      @if (links().length > 0) {
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Short link</th>
+                <th scope="col">Destination</th>
+                <th scope="col" class="hits-heading">Visits</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (link of links(); track link.code) {
+                <tr>
+                  <td class="code-cell">
+                    <a [href]="link.shortUrl" target="_blank" rel="noopener noreferrer">{{ link.code }}</a>
+                  </td>
+                  <td class="url-cell">
+                    <a [href]="link.url" target="_blank" rel="noopener noreferrer" [title]="link.url">{{ link.url }}</a>
+                  </td>
+                  <td class="hits-cell">{{ link.hits }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <div class="empty-state">
+          <p>No links yet</p>
+        </div>
+      }
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <span>SNIP</span>
+    <span>LINKS, LESS THE CLUTTER</span>
+  </footer>
+</div>
